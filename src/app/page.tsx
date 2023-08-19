@@ -1,116 +1,141 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+"use client"
+import { ArrowsClockwise, ChatCircle, Heart, TwitterLogo } from "phosphor-react"
+import { NavBar } from "./components/NavBar"
+import { TweetButton } from "./components/TweetButton"
+import { Tweet } from "./api/tweets/domains/tweet"
+import { useRef, useState } from "react"
 
-const inter = Inter({ subsets: ['latin'] })
+interface TweetProps {
+  tweet: Tweet
+}
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+  const Tweet = () => {
+    return (
+      <div className="flex flex-row gap-3 mt-6 px-5 py-6">
+        <img
+          src="https://github.com/hallexcosta.png"
+          alt="HallexCosta"
+          className="rounded-full w-14 h-14"
+        />
+
+        <div className="flex flex-col gap-2 w-full">
+          <div className="flex flex-row items-center gap-1">
+            <strong className="text-base">Hallex Costa</strong>
+            <span className="text-zinc-400/100 font-medium text-sm">
+              @hallexcosta
+            </span>
+          </div>
+          <span className="text-base">
+            Acabei de migrar um projeto React GIGANTE de create-react-app para
+            Vite e os resultados foram: <br />
+            <br />✅ npm start: De 32s para 400ms (sim, demorava 30s) <br />
+            ✅ npm build: De 120s para 22s <br />
+            <br />
+            Além disso, troquei do Yarn para o PNPM e o install das deps mudou
+            de 24s para 8s 🔥
+          </span>
+
+          <div className="flex flex-row w-full gap-12 text-base text-neutral-500">
+            <div className="flex flex-row gap-2 cursor-pointer">
+              <ChatCircle color="#89A2B8" width="24" height="24" />
+              <span>32</span>
+            </div>
+            <div className="flex flex-row gap-2 cursor-pointer">
+              <ArrowsClockwise color="#89A2B8" width="24" height="24" />
+              <span>32</span>
+            </div>
+            <div className="flex flex-row gap-2 cursor-pointer">
+              <Heart color="#89A2B8" width="24" height="24" />
+              <span>32</span>
+            </div>
+          </div>
         </div>
       </div>
+    )
+  }
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+  const SeparatorMedium = () => {
+    return <div className={`bg-gray-100 h-3`}></div>
+  }
+  const SeparatorExtraSmall = () => {
+    return <div className={`bg-gray-100 h-[1px]`}></div>
+  }
+
+  const TweetAnswer = () => {
+    const textareaRef = useRef(null)
+    const [focused, setFocused] = useState(false)
+    const [content, setContent] = useState("Tweet your answer")
+
+    function onHandleInput() {
+      console.log("testtng")
+      const textarea = textareaRef.current
+      console.log(textarea.scrollHeight + "px")
+      textarea.style.height = textarea.scrollHeight + "px"
+
+      // if (textarea.innerText === "") {
+      //   textarea.style.height = "4rem"
+      // }
+    }
+
+    function handleFocusTweetAnswer(focused: boolean) {
+      if (!focused && content.length == 0) {
+        setContent("Tweet your answer")
+      }
+
+      if (focused && content.length == 0) {
+        setContent("Tweet your answer")
+      }
+      setFocused(!focused)
+    }
+
+    function handleEnterAnswer(e) {
+      console.log(e.target.innerText)
+    }
+
+    return (
+      <div className="flex flex-row gap-4 w-full px-5 py-6">
+        <div className="flex flex-row items-start gap-4 w-full h-auto">
+          <img
+            className="rounded-full w-14 h-14"
+            src="https://github.com/hallexcosta.png"
+            alt="HallexCosta"
+          />
+          <textarea
+            ref={textareaRef}
+            className={`border-box text-base font-semi-bold p-4 outline-none w-[60%] h-16 resize-none placeholder-zinc-600 placeholder:text-xl placeholder:font-bold`}
+            placeholder="Tweet your answer"
+            onInput={onHandleInput}
+          ></textarea>
+        </div>
+
+        <button className="rounded-full h-fit bg-twitter-blue text-white text-lg font-semi-bold px-6 py-4">
+          Answer
+        </button>
       </div>
+    )
+  }
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+  return (
+    <main className="w-full h-screen flex flex-row">
+      <aside className="w-80 h-full flex flex-col gap-8 p-5">
+        <TwitterLogo width={32} height={32} weight="fill" color="#1da1f2" />
+        <NavBar />
+        <TweetButton />
+      </aside>
+      <section className="border border-l-zinc-300 w-full">
+        <h3 className="font-black text-2xl px-3 py-4">Tweet</h3>
+        <SeparatorExtraSmall />
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+        <Tweet />
+        <SeparatorMedium />
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
+        <TweetAnswer />
+        <SeparatorExtraSmall />
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+        <Tweet />
+        <SeparatorExtraSmall />
+      </section>
     </main>
   )
 }
